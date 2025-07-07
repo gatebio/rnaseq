@@ -1,4 +1,7 @@
 process TRUST4 {
+    conda "${moduleDir}/environment.yml"
+    container 'biocontainers/trust4:1.1.6.1--h5ca1c30_0'
+
     tag "${sample_id}"
     publishDir "${params.trust4_outdir ?: 'results/trust4'}", mode: 'copy'
 
@@ -7,9 +10,6 @@ process TRUST4 {
 
     output:
     path "${sample_id}_trust4_out", emit: trust4_out
-
-    conda "environment.yml"
-    container params.trust4_container ?: null
 
     script:
     def user_params = params.trust4_opts ?: ''
@@ -23,4 +23,4 @@ process TRUST4 {
     mkdir -p ${sample_id}_trust4_out
     ${run_cmd}
     """
-} 
+}       
