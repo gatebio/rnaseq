@@ -9,15 +9,13 @@ workflow {
     def fasta_vdj = 's3://gatebio-proj-rnaseq/references/hg38_bcrtcr.fa'
     def ref = 's3://gatebio-proj-rnaseq/references/human_IMGT+C.fa'
 
-    // Input channel: [sample_id, bam_or_null, fq1, fq2, fasta_vdj, ref]
-    test_ch = Channel.of([
-        sample_id,
-        bam_or_null,
-        fq1,
-        fq2,
-        fasta_vdj,
-        ref
-    ])
+    // Create channels for each input
+    sample_ch = Channel.of(sample_id)
+    bam_ch = Channel.of(bam_or_null)
+    fq1_ch = Channel.of(fq1)
+    fq2_ch = Channel.of(fq2)
+    fasta_vdj_ch = Channel.of(fasta_vdj)
+    ref_ch = Channel.of(ref)
 
-    TRUST4(test_ch)
+    TRUST4(sample_ch, bam_ch, fq1_ch, fq2_ch, fasta_vdj_ch, ref_ch)
 } 

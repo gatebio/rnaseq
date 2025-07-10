@@ -6,7 +6,12 @@ process TRUST4 {
     publishDir "${params.trust4_outdir ?: 'results/trust4'}", mode: 'copy'
 
     input:
-    tuple val(sample_id), path(bam_or_null, optional: true), path(fq1_or_null, optional: true), path(fq2_or_null, optional: true), path(fasta_vdj), path(ref)
+    val sample_id
+    path bam_or_null, optional: true
+    path fq1_or_null, optional: true
+    path fq2_or_null, optional: true
+    path fasta_vdj
+    path ref
 
     output:
     path "${sample_id}_trust4_out", emit: trust4_out
