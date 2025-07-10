@@ -21,9 +21,9 @@ process TRUST4 {
     def user_params = params.trust4_opts ?: ''
     def run_cmd
     if (mode == 'bam') {
-        run_cmd = "trust4 --ref ${ref} -f ${fasta_vdj} -b ${bam} -o ${sample_id}_trust4_out $user_params"
+        run_cmd = "run-trust4 -f ${fasta_vdj} --ref ${ref} -b ${bam} -o ${sample_id}_trust4_out $user_params"
     } else {
-        run_cmd = "trust4 --ref ${ref} -f ${fasta_vdj} -1 ${fq1} -2 ${fq2} -o ${sample_id}_trust4_out $user_params"
+        run_cmd = "run-trust4 -f ${fasta_vdj} --ref ${ref} -1 ${fq1} -2 ${fq2} -o ${sample_id}_trust4_out $user_params"
     }
     """
     mkdir -p ${sample_id}_trust4_out
