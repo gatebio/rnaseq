@@ -7,9 +7,10 @@ process TRUST4 {
 
     input:
     val sample_id
-    path bam_or_null, optional: true
-    path fq1_or_null, optional: true
-    path fq2_or_null, optional: true
+    val mode
+    path bam
+    path fq1
+    path fq2
     path fasta_vdj
     path ref
 
@@ -19,10 +20,10 @@ process TRUST4 {
     script:
     def user_params = params.trust4_opts ?: ''
     def run_cmd
-    if (bam_or_null && bam_or_null.toString() != 'null') {
-        run_cmd = "TRUST4 --ref ${ref} -f ${fasta_vdj} -b ${bam_or_null} -o ${sample_id}_trust4_out $user_params"
+    if (mode == 'bam') {
+        run_cmd = "TRUST4 --ref ${ref} -f ${fasta_vdj} -b ${bam} -o ${sample_id}_trust4_out $user_params"
     } else {
-        run_cmd = "TRUST4 --ref ${ref} -f ${fasta_vdj} -1 ${fq1_or_null} -2 ${fq2_or_null} -o ${sample_id}_trust4_out $user_params"
+        run_cmd = "TRUST4 --ref ${ref} -f ${fasta_vdj} -1 ${fq1} -2 ${fq2} -o ${sample_id}_trust4_out $user_params"
     }
     """
     mkdir -p ${sample_id}_trust4_out

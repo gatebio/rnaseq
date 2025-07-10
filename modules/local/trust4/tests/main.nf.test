@@ -3,19 +3,25 @@ include { TRUST4 } from '../main.nf'
 
 workflow {
     def sample_id = 'testsample'
-    def bam_or_null = null // or 's3://bucket/path/to/test.bam' if testing BAM input
+    def mode = 'fastq' // or 'bam' for BAM mode
+    def bam = file("${projectDir}/dummy.bam")
     def fq1 = 's3://gatebio-proj-rnaseq/gbRNA000-test-data/S1_1_sampled.fastq.gz'
     def fq2 = 's3://gatebio-proj-rnaseq/gbRNA000-test-data/S1_2_sampled.fastq.gz'
     def fasta_vdj = 's3://gatebio-proj-rnaseq/references/hg38_bcrtcr.fa'
     def ref = 's3://gatebio-proj-rnaseq/references/human_IMGT+C.fa'
 
-    // Create channels for each input
+    // Ensure dummy.bam exists (empty file for test)
+    if( !bam.exists() ) {
+        bam.text = ''
+    }
+
     sample_ch = Channel.of(sample_id)
-    bam_ch = Channel.of(bam_or_null)
+    mode_ch = Channel.of(mode)
+    bam_ch = Channel.of(bam)
     fq1_ch = Channel.of(fq1)
     fq2_ch = Channel.of(fq2)
     fasta_vdj_ch = Channel.of(fasta_vdj)
     ref_ch = Channel.of(ref)
 
-    TRUST4(sample_ch, bam_ch, fq1_ch, fq2_ch, fasta_vdj_ch, ref_ch)
+    TRUST4(sample_ch, mode_ch, bam_ch, fq1_ch, fq2_ch, fasta_vdj_ch, ref_ch)
 } 
