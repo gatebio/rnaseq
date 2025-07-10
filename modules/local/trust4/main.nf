@@ -15,7 +15,7 @@ process TRUST4 {
     path ref
 
     output:
-    path "${sample_id}_trust4_out", emit: trust4_out
+    path "${sample_id}_trust4_out/*", emit: trust4_out
 
     script:
     def user_params = params.trust4_opts ?: ''
@@ -23,10 +23,9 @@ process TRUST4 {
     if (mode == 'bam') {
         run_cmd = "run-trust4 -f ${fasta_vdj} --ref ${ref} -b ${bam} -o ${sample_id}_trust4_out $user_params"
     } else {
-        run_cmd = "run-trust4 -f ${fasta_vdj} --ref ${ref} -1 ${fq1} -2 ${fq2} -o ${sample_id}_trust4_out $user_params"
+        run_cmd = "run-trust4 -f ${fasta_vdj} --ref ${ref} -1 ${fq1} -2 ${fq2} -o ${sample_id}_trust4_out/${sample_id}_trust4_out $user_params"
     }
     """
-    mkdir -p ${sample_id}_trust4_out
     ${run_cmd}
     """
 }       
