@@ -20,7 +20,7 @@ process TRUST4 {
     script:
     def user_params = params.trust4_opts ?: ''
     def outdir = "${sample_id}_trust4_out"
-    def outprefix = "${outdir}/${sample_id}_trust4_out"
+    def outprefix = "${outdir}/${sample_id}"
     def run_cmd
     if (mode == 'bam') {
         run_cmd = "run-trust4 -f ${fasta_vdj} --ref ${ref} -b ${bam} -o ${outprefix} $user_params"
