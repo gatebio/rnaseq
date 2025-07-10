@@ -1,2 +1,22 @@
-// Placeholder test for TRUST4 module
-// Add real test cases with small paired-end FASTQ files for full validation 
+nextflow.enable.dsl=2
+
+workflow {
+    def sample_id = 'testsample'
+    def bam_or_null = null // or 's3://bucket/path/to/test.bam' if testing BAM input
+    def fq1 = 's3://gatebio-proj-rnaseq/gbRNA000-test-data/S1_1_sampled.fastq.gz'
+    def fq2 = 's3://gatebio-proj-rnaseq/gbRNA000-test-data/S1_2_sampled.fastq.gz'
+    def fasta_vdj = 's3://gatebio-proj-rnaseq/references/hg38_bcrtcr.fa'
+    def ref = 's3://gatebio-proj-rnaseq/references/human_IMGT+C.fa'
+
+    // Input channel: [sample_id, bam_or_null, fq1, fq2, fasta_vdj, ref]
+    test_ch = Channel.of([
+        sample_id,
+        bam_or_null,
+        fq1,
+        fq2,
+        fasta_vdj,
+        ref
+    ])
+
+    TRUST4(test_ch)
+} 
