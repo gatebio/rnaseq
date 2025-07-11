@@ -31,4 +31,4 @@ process TRUST4 {
     mkdir -p ${outdir}
     ${run_cmd}
     """
-}       
+}

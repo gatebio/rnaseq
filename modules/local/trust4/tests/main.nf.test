@@ -1,14 +1,16 @@
+script:
+"""
 nextflow.enable.dsl=2
 include { TRUST4 } from '../main.nf'
 
 workflow {
     def sample_id = 'testsample'
-    def mode = 'fastq' // or 'bam' for BAM mode
-    def bam = file("${projectDir}/dummy.bam")
-    def fq1 = 's3://gatebio-proj-rnaseq/gbRNA000-test-data/S1_1_sampled.fastq.gz'
-    def fq2 = 's3://gatebio-proj-rnaseq/gbRNA000-test-data/S1_2_sampled.fastq.gz'
-    def fasta_vdj = 's3://gatebio-proj-rnaseq/references/hg38_bcrtcr.fa'
-    def ref = 's3://gatebio-proj-rnaseq/references/human_IMGT+C.fa'
+    def mode = 'fastq'
+    def bam = file('dummy.bam') // Not used in fastq mode, but required as input
+    def fq1 = 'https://raw.githubusercontent.com/liulab-dfci/TRUST4/6c1c02c97b365a4ebfa4e986c75e6898779a8def/example/example_1.fq'
+    def fq2 = 'https://raw.githubusercontent.com/liulab-dfci/TRUST4/6c1c02c97b365a4ebfa4e986c75e6898779a8def/example/example_2.fq'
+    def fasta_vdj = 'https://raw.githubusercontent.com/liulab-dfci/TRUST4/6c1c02c97b365a4ebfa4e986c75e6898779a8def/human_IMGT%2BC.fa'
+    def ref = 'https://raw.githubusercontent.com/liulab-dfci/TRUST4/6c1c02c97b365a4ebfa4e986c75e6898779a8def/hg38_bcrtcr.fa'
 
     // Ensure dummy.bam exists (empty file for test)
     if( !bam.exists() ) {
@@ -24,4 +26,5 @@ workflow {
     ref_ch = Channel.of(ref)
 
     TRUST4(sample_ch, mode_ch, bam_ch, fq1_ch, fq2_ch, fasta_vdj_ch, ref_ch)
-} 
+}
+""" 
